@@ -1,3 +1,4 @@
+from datetime import datetime
 class Book:
     def __init__(self,book_id,title,author,category,available_copies):
         self.id = book_id
@@ -47,4 +48,7 @@ class Transaction:
         self.book_id = book_id
         self.user_id = user_id
         self.action = action
-        self.date = datetime.now(strftime("%Y-%m-%d %H:%M"))
+        self.date = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+    def __str__(self):
+        return f"Transaction ID: {self.trans_id}, User: {self.user_id}, performed: {self.action}, Book: {self.book_id}, Time: {self.date}"
