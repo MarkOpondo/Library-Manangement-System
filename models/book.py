@@ -1,6 +1,5 @@
-
 from datetime import datetime
-from users import User
+from user import User
 class Book:
     def __init__(self,book_id,title,author,category,total_copies):
         self._book_id = book_id
@@ -55,8 +54,7 @@ class Book:
         if available_copies is not None:
             self.available_copies = available_copies
 
-   
-                        
+                     
     def to_dict(self):
         return {
             "book_id": self._book_id,
