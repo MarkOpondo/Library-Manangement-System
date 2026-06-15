@@ -1,4 +1,6 @@
 
+from datetime import datetime
+from users import User
 class Book:
     def __init__(self,book_id,title,author,category,total_copies):
         self._book_id = book_id
@@ -64,6 +66,12 @@ class Book:
             "total_copies": self._total_copies,
             "available_copies": self._available_copies
         }
+class Transaction(Book, User):
+    def __init__(self, trans_id, book_id, user_id, action):
+        super().__init__(book_id, user_id)
+        self.trans_id = trans_id
+        self.action = action
+        self.date = datetime.now().strftime("%Y-%m-%d %H:%M")
 
     def __str__(self):
         return (
