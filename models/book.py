@@ -1,4 +1,5 @@
 from datetime import datetime
+from users import User
 class Book:
     def __init__(self,book_id,title,author,category,available_copies):
         self.__id = book_id
@@ -80,11 +81,10 @@ class Book:
             f"Available Copies={self.__available_copies})"
         )
                         
-class Transaction(Book):
+class Transaction(Book, User):
     def __init__(self, trans_id, book_id, user_id, action):
-        super().__init__(book_id)
+        super().__init__(book_id, user_id)
         self.trans_id = trans_id
-        self.user_id = user_id
         self.action = action
         self.date = datetime.now().strftime("%Y-%m-%d %H:%M")
 
