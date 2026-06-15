@@ -1,0 +1,18 @@
+[
+    {
+        "book_id": "B001",
+        "title": "clean code",
+        "author": "Robert Martin",
+        "category": "Programming",
+        "total_copies": 5,
+        "available_copies": 4
+    },
+    {
+        "book_id": "B002",
+        "title": "Python Crash Course",
+        "author": "Eric Matthes",
+        "category": "Programming",
+        "total_copies": 3,
+        "available_copies": 3
+    }
+]
