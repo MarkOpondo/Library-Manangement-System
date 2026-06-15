@@ -80,10 +80,10 @@ class Book:
             f"Available Copies={self.__available_copies})"
         )
                         
-class Transaction:
+class Transaction(Book):
     def __init__(self, trans_id, book_id, user_id, action):
+        super().__init__(book_id)
         self.trans_id = trans_id
-        self.book_id = book_id
         self.user_id = user_id
         self.action = action
         self.date = datetime.now().strftime("%Y-%m-%d %H:%M")
