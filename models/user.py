@@ -1,31 +1,34 @@
 import hashlib
-from models.book import Book
+from abc import ABC
 
-class User:
-    def __init__(self, user_id, username, password, role="user"):
-        self.__id = user_id
-        self.__username = username
-        self.__password = self.hash_password(password)
-        self.__role = role
+
+class User(ABC):
+    def __init__(self, user_id, username, password_hash, role):
+        self._user_id = user_id
+        self._username = username
+        self._password_hash = password_hash
+        self._role = role
 
     @property
-    def id(self): return self.__id
+    def user_id(self): return self._user_id
     @property
-    def username(self): return self.__username
+    def username(self): return self._username
     @property
-    def role(self): return self.__role
+    def role(self): return self._role
 
-    def hash_password(self, password):
+    def password_hash(self, password):
         return hashlib.sha256(password.encode()).hexdigest()
 
     def verify_password(self, password):
-        return self.__password == hashlib.sha256(password.encode()).hexdigest()
+        return self._password == hashlib.sha256(password.encode()).hexdigest()
 
-    def viewBook(self, book: Book):
-        return str(book)
+    def to_dict(self):
+        return {
+            "user_id": self._user_id,
+            "username": self._username,
+            "password_hash": self._password_hash,
+            "role": self._role
+        }
 
-    def borrowBook(self, book: Book):
-        return book.borrowBook()
-
-    def returnBook(self, book: Book):
-        return book.returnBook()
+    def __str__(self):
+        return f"{self._username} ({self._role})"

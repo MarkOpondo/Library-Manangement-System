@@ -1,63 +1,46 @@
+
 from datetime import datetime
 from users import User
 class Book:
-    def __init__(self,book_id,title,author,category,available_copies):
-        self.__id = book_id
-        self.__title = title
-        self.__author = author
-        self.__category = category
-        self.__available_copies = available_copies
+    def __init__(self,book_id,title,author,category,total_copies):
+        self._book_id = book_id
+        self._title = title
+        self._author = author
+        self._category = category
+        self._total_copies = total_copies
+        self._available_copies = total_copies
     
     @property
-    def id(self):
-        return self.__id
+    def book_id(self):
+        return self._id
     
     @property
     def title(self):
-        return self.__title
-    
-    @title.setter
-    def title(self, value):
-        self.__title = value    
+        return self._title
     
     @property
     def author(self):
-        return self.__author
+        return self._author
     
-    @author.setter
-    def author(self, value):
-        self.__author = value
-    
-    @property
-    def category(self):
-        return self.__category
-    
-    @category.setter
-    def category(self, value):
-        self.__category = value
     
     @property
     def available_copies(self):
-        return self.__available_copies
+        return self._available_copies
 
-    @available_copies.setter
-    def available_copies(self, value):
-        if value < 0:
-            raise ValueError("Available copies cannot be negative.")
-        self.__available_copies = value 
-
-    def isAvailable(self):
-        return self.__available_copies > 0
-
-    def borrowBook(self):
-        if self.isAvailable():
-            self.__available_copies -= 1
-            return True    
-        raise ValueError ("Book is not available for borrowing.")
     
+    def borrow_copy(self):
+        if self._available_copies <= 0:
+            raise ValueError("No copies available.")
+
+        self._available_copies -= 1
+
+    def return_copy(self):
+        if self._available_copies < self._total_copies:
+            self._available_copies += 1
+
     def returnBook(self):
-        self.__available_copies += 1
-        return f"Book '{self.__title}' successfully returned. Available copies: {self.__available_copies}"
+        self._available_copies += 1
+        return f"Book '{self.__title}' successfully returned. Available copies: {self._available_copies}"
     
     def updateBook(self, title=None, author=None, category=None, available_copies=None):
         if title is not None:
@@ -72,15 +55,17 @@ class Book:
         if available_copies is not None:
             self.available_copies = available_copies
 
-    def __str__(self):
-        return (
-            f"Book(ID={self.__id}, "
-            f"Title='{self.__title}', "
-            f"Author='{self.__author}', "
-            f"Category='{self.__category}', "
-            f"Available Copies={self.__available_copies})"
-        )
+   
                         
+    def to_dict(self):
+        return {
+            "book_id": self._book_id,
+            "title": self._title,
+            "author": self._author,
+            "category": self._category,
+            "total_copies": self._total_copies,
+            "available_copies": self._available_copies
+        }
 class Transaction(Book, User):
     def __init__(self, trans_id, book_id, user_id, action):
         super().__init__(book_id, user_id)
@@ -89,4 +74,7 @@ class Transaction(Book, User):
         self.date = datetime.now().strftime("%Y-%m-%d %H:%M")
 
     def __str__(self):
-        return f"Transaction ID: {self.trans_id}, User: {self.user_id}, performed: {self.action}, Book: {self.book_id}, Time: {self.date}"
+        return (
+            f"{self._title} by {self._author} "
+            f"({self._available_copies}/{self._total_copies} available)"
+        )
